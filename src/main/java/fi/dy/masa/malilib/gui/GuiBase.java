@@ -586,6 +586,11 @@ public abstract class GuiBase extends Screen implements IMessageConsumer, IStrin
 
     protected void drawButtonHoverTexts(int mouseX, int mouseY, float partialTicks, MatrixStack matrixStack)
     {
+        if (this.shouldRenderHoverStuff() == false)
+        {
+            return;
+        }
+
         for (ButtonBase button : this.buttons)
         {
             if (button.hasHoverText() && button.isMouseOver())
@@ -593,16 +598,23 @@ public abstract class GuiBase extends Screen implements IMessageConsumer, IStrin
                 RenderUtils.drawHoverText(mouseX, mouseY, button.getHoverStrings(), matrixStack);
             }
         }
+    }
 
-        RenderUtils.disableDiffuseLighting();
+    protected boolean shouldRenderHoverStuff()
+    {
+        return this.mc.currentScreen == this;
     }
 
     protected void drawHoveredWidget(int mouseX, int mouseY, MatrixStack matrixStack)
     {
+        if (this.shouldRenderHoverStuff() == false)
+        {
+            return;
+        }
+
         if (this.hoveredWidget != null)
         {
             this.hoveredWidget.postRenderHovered(mouseX, mouseY, false, matrixStack);
-            RenderUtils.disableDiffuseLighting();
         }
     }
 
